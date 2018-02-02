@@ -1,0 +1,78 @@
+﻿
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Raspi-SHT21</title>
+    <link href="layout.css" rel="stylesheet" type="text/css">
+    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="js/jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+ </head>
+    <body>
+	
+	
+	<h2>               33 92
+   Temperatur: &deg;C   Luftfeuchtigkeit: %</h2>	
+	
+    <h3>Raspi-SHT21 (Temperature and Humidity with SHT21 Sensor) <a href="http://www.emsystech.de/">(www.emsystech.de)</a></h3>
+	
+    <div id="placeholder" style="width:900px;height:420px;"></div>
+
+	</br>
+	
+	<form action="index.php" method="get">
+	Tage: <input type="text" name="days" />
+	<input type="submit" />
+	</form> 
+	
+    <p>
+	</p>
+	
+	
+<script type="text/javascript">
+$(function () {
+
+	var temperature = [[000,],[000,],[000,]];
+var humidity = [[000,],[000,],[000,]];	
+	
+    function euroFormatter(v, axis) {
+        return v.toFixed(axis.tickDecimals) +"%";
+    }
+	
+	function TempFormatter(v, axis) {
+        return v.toFixed(axis.tickDecimals) +"&deg;C";
+    }
+    
+    function doPlot(position) {
+        $.plot($("#placeholder"),
+           [ { data: temperature, label: "Temperature [&deg;C]" },
+             { data: humidity, label: "Humidity", yaxis: 2 }],
+           { 
+               xaxes: [ { mode: 'time' } ],
+               yaxes: [ { min: -20 , max: 40,
+							tickFormatter: TempFormatter },
+                        {
+						  min: 0 , max: 100 ,
+                          // align if we are to the right
+                          alignTicksWithAxis: position == "right" ? 1 : null,
+                          position: position,
+                          tickFormatter: euroFormatter
+                        } ],
+               legend: { position: 'sw' }
+           });
+    }
+
+    doPlot("right");
+    
+  /*  $("button").click(function () 
+	{
+        doPlot($(this).text());
+    });*/
+});
+</script>
+ </body>
+</html>
